@@ -4,35 +4,34 @@ tasks:
   setup:
     desc: Setup development environment
     cmds:
-      - python -m venv .venv
-      - source .venv/bin/activate && python -m pip install uv
-      - source .venv/bin/activate && uv pip install -e .
-      - source .venv/bin/activate && uv pip install pytest mypy ruff pytest-cov
+      - uv venv .venv
+      - uv pip install -e .
+      - uv pip install pytest mypy ruff pytest-cov
 
   install:
     desc: Install dependencies using uv
     cmds:
-      - source .venv/bin/activate && uv pip install -e .
+      - uv pip install -e .
 
   run:
     desc: Run the file manager
     cmds:
-      - source .venv/bin/activate && python -m better_file_manager.main
+      - .venv/bin/python -m better_file_manager.main
 
   test:
     desc: Run tests with pytest
     cmds:
-      - source .venv/bin/activate && pytest tests/ --cov=better_file_manager
+      - .venv/bin/python -m pytest tests/ --cov=better_file_manager
 
   lint:
     desc: Run ruff linter
     cmds:
-      - source .venv/bin/activate && ruff check .
+      - .venv/bin/python -m ruff check .
 
   typecheck:
     desc: Run mypy type checker
     cmds:
-      - source .venv/bin/activate && mypy better_file_manager
+      - .venv/bin/python -m mypy better_file_manager
 
   check:
     desc: Run all checks (lint, typecheck, test)
@@ -46,3 +45,8 @@ tasks:
     cmds:
       - rm -rf build/ dist/ *.egg-info .pytest_cache .coverage .mypy_cache .ruff_cache
       - find . -type d -name "__pycache__" -exec rm -rf {} +
+
+  clean-venv:
+    desc: Remove virtual environment
+    cmds:
+      - rm -rf .venv
